@@ -1,8 +1,9 @@
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## install lib reactjs
 
 npm i -g create-react-app@version
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## create react app
 
