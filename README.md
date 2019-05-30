@@ -1,4 +1,17 @@
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## install lib reactjs
+
+npm i -g create-react-app@version
+
+## create react app
+
+create-app-react counter-app
+
+## add bootstrap
+
+npm -i bootstrap@version
 
 ## Available Scripts
 
@@ -11,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
+ersion
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.<br>
