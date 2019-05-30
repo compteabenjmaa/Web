@@ -2,6 +2,8 @@
 
 npm i -g create-react-app@version
 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## create react app
 
 create-app-react counter-app
@@ -9,8 +11,6 @@ create-app-react counter-app
 ## add bootstrap
 
 npm -i bootstrap@version
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
