@@ -12,6 +12,7 @@ class Counter extends Component {
     console.log(this.props);
     return (
       <div>
+        {this.props.children}
         <span className={this.getBadgeClass()}>{this.formatCounter()}</span>
         <button
           className="btn btn-secondary btn-sm"
