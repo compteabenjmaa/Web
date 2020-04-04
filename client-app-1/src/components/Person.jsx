@@ -6,6 +6,8 @@ class Person extends Component {
   }
   state = {
     persons: [],
+    formData: { name: "", age: "" },
+    errorTab: [],
   };
   render() {
     return (
@@ -16,9 +18,18 @@ class Person extends Component {
     );
   }
 
+  getClassErrors() {
+    let classes = "alert mt-2 alert-";
+    classes += this.state.errorTab.length > 0 ? "danger" : "light";
+    return classes;
+  }
+
   getForm() {
     return (
       <React.Fragment>
+        <div className={this.getClassErrors()}>
+          {this.state.errorTab.join(",")}
+        </div>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -28,6 +39,7 @@ class Person extends Component {
               id="name"
               aria-describedby="emailHelp"
               placeholder="Enter name"
+              //  value={this.state.formData.name}
             ></input>
           </div>
           <div className="form-group">
@@ -38,6 +50,7 @@ class Person extends Component {
               id="age"
               aria-describedby="emailHelp"
               placeholder="Enter age"
+              //  value={this.state.formData.age}
             ></input>
           </div>
           <button type="submit" className="btn btn-primary" value="Envoyé">
