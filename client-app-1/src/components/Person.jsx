@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import $ from "jquery";
+import { isThisTypeNode } from "typescript";
 class Person extends Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   componentDidMount() {
     this.getListPerson();
   }
   state = {
-    persons: [],
     formData: { name: "", age: "" },
     errorTab: [],
+    persons: [],
   };
   render() {
     return (
@@ -18,10 +24,35 @@ class Person extends Component {
     );
   }
 
-  getClassErrors() {
-    let classes = "alert mt-2 alert-";
-    classes += this.state.errorTab.length > 0 ? "danger" : "light";
-    return classes;
+  handleChange(event) {
+    const formData = this.state.formData;
+    if (event.target.id === "name") {
+      formData.name = event.target.value;
+    } else {
+      formData.age = event.target.value;
+    }
+    this.setState({ formData: formData });
+  }
+
+  isNumeric(value) {}
+
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log("submit");
+    let { formData, errorTab } = this.state;
+    errorTab = [];
+    if (formData.name.length === 0 || formData.name === "") {
+      errorTab.push("the field name obligatory");
+    }
+    if (
+      this.isNumeric(formData.age) ||
+      (formData.age < 18 && formData.age > 35)
+    ) {
+      errorTab.push(
+        "the field age obligatory and to be a number between 18 and 35 "
+      );
+    }
+    this.setState({ errorTab: errorTab });
   }
 
   getForm() {
@@ -39,7 +70,8 @@ class Person extends Component {
               id="name"
               aria-describedby="emailHelp"
               placeholder="Enter name"
-              //  value={this.state.formData.name}
+              value={this.state.formData.name}
+              onChange={(e) => this.handleChange(e)}
             ></input>
           </div>
           <div className="form-group">
@@ -50,7 +82,8 @@ class Person extends Component {
               id="age"
               aria-describedby="emailHelp"
               placeholder="Enter age"
-              //  value={this.state.formData.age}
+              value={this.state.formData.age}
+              onChange={(e) => this.handleChange(e)}
             ></input>
           </div>
           <button type="submit" className="btn btn-primary" value="Envoyé">
@@ -121,6 +154,12 @@ class Person extends Component {
       .fail((error) => {
         console.log(error);
       });
+  }
+
+  getClassErrors() {
+    let classes = "alert mt-2 alert-";
+    classes += this.state.errorTab.length > 0 ? "danger" : "light";
+    return classes;
   }
 }
 
