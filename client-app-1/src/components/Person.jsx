@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import $ from "jquery";
 
 class Person extends Component {
+  url = "http://localhost:8080";
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +41,6 @@ class Person extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("submit");
     let { formData, errorTab } = this.state;
     errorTab = [];
     if (formData.name.length === 0 || formData.name === "") {
@@ -56,6 +56,67 @@ class Person extends Component {
       );
     }
     this.setState({ errorTab: errorTab });
+    $.ajax(this.url.concat("/addPerson"), {
+      type: "POST",
+      data: JSON.stringify(this.state.formData),
+      contentType: "false",
+      dataType: "json",
+      processData: "false",
+      crossDomain: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      xhrFields: {
+        withCredentials: false,
+      },
+    })
+      .done((data, responseStatus, xhr) => {
+        if (xhr.status === 201) {
+          this.getListPerson();
+        } else {
+          errorTab.push(xhr.statusText);
+          this.setState({ errorTab: errorTab });
+        }
+      })
+      .fail((error) => {
+        console.log("error");
+      });
+  }
+
+  handleEdit(id) {
+    //const {  }
+  }
+
+  handleDelete(id) {
+    console.log("delete", id);
+    const errorTab = this.state.errorTab;
+    $.ajax(this.url.concat("/deletePerson/").concat(id), {
+      type: "DELETE",
+      //  data: { id: id },
+      contentType: "false",
+      dataType: "json",
+      processData: "false",
+      crossDomain: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      xhrFields: {
+        withCredentials: false,
+      },
+    })
+      .done((data, responseStatus, xhr) => {
+        if (xhr.status === 200) {
+          this.getListPerson();
+        } else {
+          errorTab.push(xhr.statusText);
+          this.setState({ errorTab: errorTab });
+        }
+      })
+      .fail((error) => {
+        console.log("error");
+      });
   }
 
   getForm() {
@@ -120,6 +181,7 @@ class Person extends Component {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm mr-2 w-25"
+                      onClick={(e) => this.handleEdit(e, p.id)}
                     >
                       <span
                         className="glyphicon glyphicon-edit"
@@ -131,6 +193,7 @@ class Person extends Component {
                     <button
                       type="button"
                       className="btn btn-danger btn-sm w-25"
+                      onClick={() => this.handleDelete(p.id)}
                     >
                       <span
                         className="glyphicon glyphicon-edit"
@@ -149,8 +212,7 @@ class Person extends Component {
   }
 
   getListPerson() {
-    const url = "http://localhost:8080";
-    $.getJSON(url.concat("/listPerson"))
+    $.getJSON(this.url.concat("/listPerson"))
       .done((data) => {
         this.setState({ persons: data.listPerson });
       })
