@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import $ from "jquery";
-import { isThisTypeNode } from "typescript";
+
 class Person extends Component {
   constructor() {
     super();
@@ -34,7 +34,9 @@ class Person extends Component {
     this.setState({ formData: formData });
   }
 
-  isNumeric(value) {}
+  isNumeric(value) {
+    return RegExp("^d+$").test(value);
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -44,9 +46,10 @@ class Person extends Component {
     if (formData.name.length === 0 || formData.name === "") {
       errorTab.push("the field name obligatory");
     }
+
     if (
-      this.isNumeric(formData.age) ||
-      (formData.age < 18 && formData.age > 35)
+      this.isNumeric(formData.age) === false &&
+      (Number.parseInt(formData.age) < 18 || Number.parseInt(formData.age) > 35)
     ) {
       errorTab.push(
         "the field age obligatory and to be a number between 18 and 35 "
