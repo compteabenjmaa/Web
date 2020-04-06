@@ -12,7 +12,7 @@ class Person extends Component {
     this.getListPerson();
   }
   state = {
-    formData: { name: "", age: "" },
+    formData: { name: "", age: "", id: "" },
     errorTab: [],
     persons: [],
   };
@@ -29,8 +29,10 @@ class Person extends Component {
     const formData = this.state.formData;
     if (event.target.id === "name") {
       formData.name = event.target.value;
-    } else {
+    } else if (event.target.id === "age") {
       formData.age = event.target.value;
+    } else {
+      formData.id = event.target.value;
     }
     this.setState({ formData: formData });
   }
@@ -56,7 +58,13 @@ class Person extends Component {
       );
     }
     this.setState({ errorTab: errorTab });
-    $.ajax(this.url.concat("/addPerson"), {
+    let pathurl = "";
+    if (formData.id === "") {
+      pathurl = "/addPerson";
+    } else {
+      pathurl = "/updatePerson/".concat(formData.id);
+    }
+    $.ajax(this.url.concat(pathurl), {
       type: "POST",
       data: JSON.stringify(this.state.formData),
       contentType: "false",
@@ -74,7 +82,7 @@ class Person extends Component {
       .done((data, responseStatus, xhr) => {
         if (xhr.status === 201) {
           this.getListPerson();
-          this.setState({ formData: { name: "", age: "" } });
+          this.setState({ formData: { name: "", age: "", id: "" } });
         } else {
           errorTab.push(xhr.statusText);
           this.setState({ errorTab: errorTab });
@@ -125,6 +133,16 @@ class Person extends Component {
           {this.state.errorTab.join(",")}
         </div>
         <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <input
+              type="hidden"
+              className="form-control"
+              name="id"
+              aria-describedby="idHelp"
+              value={this.state.formData.id}
+              onChange={(e) => this.handleChange(e)}
+            ></input>
+          </div>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
