@@ -59,13 +59,15 @@ class Person extends Component {
     }
     this.setState({ errorTab: errorTab });
     let pathurl = "";
+    let type = "POST";
     if (formData.id === "") {
       pathurl = "/addPerson";
     } else {
       pathurl = "/updatePerson/".concat(formData.id);
+      type = "PUT";
     }
     $.ajax(this.url.concat(pathurl), {
-      type: "POST",
+      type: type,
       data: JSON.stringify(this.state.formData),
       contentType: "false",
       dataType: "json",
@@ -80,7 +82,7 @@ class Person extends Component {
       },
     })
       .done((data, responseStatus, xhr) => {
-        if (xhr.status === 201) {
+        if (xhr.status === 201 || xhr.status === 200) {
           this.getListPerson();
           this.setState({ formData: { name: "", age: "", id: "" } });
         } else {
@@ -94,7 +96,8 @@ class Person extends Component {
   }
 
   handleEdit(id) {
-    //const {  }
+    const personele = this.state.persons.filter((p) => id === p.id).pop();
+    this.setState({ formData: personele });
   }
 
   handleDelete(id) {
@@ -198,7 +201,7 @@ class Person extends Component {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm mr-2 w-25"
-                      onClick={(e) => this.handleEdit(e, p.id)}
+                      onClick={() => this.handleEdit(p.id)}
                     >
                       <span
                         className="glyphicon glyphicon-edit"
