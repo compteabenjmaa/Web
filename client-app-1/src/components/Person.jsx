@@ -50,8 +50,12 @@ class Person extends Component {
     }
 
     if (
-      this.isNumeric(formData.age) === false &&
-      (Number.parseInt(formData.age) < 18 || Number.parseInt(formData.age) > 35)
+      !(formData.age.length === 0) &&
+      !(formData.age === "") &&
+      !RegExp("^d+$").test(formData.age) &&
+      (Number.isNaN(Number.parseInt(formData.age)) ||
+        Number.parseInt(formData.age) < 18 ||
+        Number.parseInt(formData.age) > 35)
     ) {
       errorTab.push(
         "the field age obligatory and to be a number between 18 and 35 "
@@ -133,7 +137,9 @@ class Person extends Component {
     return (
       <React.Fragment>
         <div className={this.getClassErrors()}>
-          {this.state.errorTab.join(",")}
+          {this.state.errorTab.map((err) => (
+            <div key={err}>{err}</div>
+          ))}
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
