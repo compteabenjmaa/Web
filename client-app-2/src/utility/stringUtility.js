@@ -3,8 +3,8 @@ class StringUtility {
     return RegExp("^d+$").test(value);
   }
 
-  static isNotEmpty(value) {
-    return !(value.length === 0 && value === "");
+  static isEmpty(value) {
+    return value.length === 0 && value === "";
   }
 }
 

@@ -5,17 +5,13 @@ class FormPerson extends Component {
     super();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.formPersons.id !== prevProps.formPersons.id) {
-      this.forceUpdate();
-    }
-  }
-
   render() {
     return (
       <React.Fragment>
         <div className={this.getClassErrors()}>
-          {this.props.formPersons.errorTab.join(",")}
+          {this.props.formPersons.errorTab.map((err) => (
+            <div key={err}>{err}</div>
+          ))}
         </div>
         <form onSubmit={this.props.onEnvoye}>
           <div className="form-group">
