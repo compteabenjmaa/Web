@@ -74,6 +74,7 @@ class Person extends Component {
       .done((data, responseStatus, xhr) => {
         if (xhr.status === 201) {
           this.getListPerson();
+          this.setState({ formData: { name: "", age: "" } });
         } else {
           errorTab.push(xhr.statusText);
           this.setState({ errorTab: errorTab });
@@ -89,11 +90,9 @@ class Person extends Component {
   }
 
   handleDelete(id) {
-    console.log("delete", id);
     const errorTab = this.state.errorTab;
     $.ajax(this.url.concat("/deletePerson/").concat(id), {
       type: "DELETE",
-      //  data: { id: id },
       contentType: "false",
       dataType: "json",
       processData: "false",
