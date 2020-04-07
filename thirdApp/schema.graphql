@@ -1,6 +1,7 @@
 type Query  {
    greeting: String,
    student:[Student]
+   studentById(id:ID):Student
 }
 
 type Student {
